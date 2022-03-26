@@ -21,6 +21,12 @@ class HomeViewController: UIViewController {
     
     lazy var tarefas = [TarefaData]() {
         didSet {
+            tarefasFiltradas = filterTasks(tasks: tarefas)
+        }
+    }
+    
+    lazy var tarefasFiltradas = [[TarefaData]]() {
+        didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -62,6 +68,7 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = newTaskButton
 
         // GetTasks
+        tarefas = Service.shared.getData()
     }
 
     // MARK: NewTaskSelection
@@ -75,7 +82,21 @@ class HomeViewController: UIViewController {
         present(newTaskViewController, animated: true) {
             print("ok!")
         }
-        viewWillAppear(true)
+    }
+    
+    // MARK: - Change Tarefa
+    
+    func changeTarefaStatus(task: TarefaData) {
+        var targetTask = task
+        targetTask.isDone = !task.isDone
+        
+        Service.shared.update(task: targetTask) { result in
+            print(result)
+            
+            if (result == "Successful Update") {
+                self.tarefas = Service.shared.getData()
+            }
+        }
     }
 
 }
@@ -85,15 +106,74 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Cliquei na tela no índice \(indexPath.row)")
+        
+        let section = tarefasFiltradas[indexPath.section]
+        let tarefa = section[indexPath.row]
+        
+        changeTarefaStatus(task: tarefa)
+        
+        //tableView.deleteRows(at: [indexPath], with: .right)
     }
 }
 
 extension HomeViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        var count = 0
+        
+        for item in self.tarefasFiltradas {
+            if item.count > 0 {
+                count += 1
+            }
+        }
+        
+        return count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 1 {
+            return "Concluídas"
+        } else {
+            return "A Fazer"
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        30
+        let section = self.tarefasFiltradas[section]
+        
+        return section.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UITableViewCell()
+        
+        let section = tarefasFiltradas[indexPath.section]
+        let tarefa = section[indexPath.row]
+        
+        // Configure cell here based on "tarefa" info
+        let cell = UITableViewCell()
+        cell.backgroundColor = (tarefa.isDone) ? .green : .red
+        
+        return cell
+    }
+}
+
+extension HomeViewController {
+    func filterTasks(tasks: [TarefaData]) -> [[TarefaData]] {
+        var filteredTasks: [[TarefaData]] = []
+        var toBeDoneTasks: [TarefaData] = []
+        var doneTasks: [TarefaData] = []
+        
+        for item in tasks {
+            if item.isDone {
+                doneTasks.append(item)
+            } else {
+                toBeDoneTasks.append(item)
+            }
+        }
+        
+        filteredTasks.append(toBeDoneTasks)
+        filteredTasks.append(doneTasks)
+        
+        return filteredTasks
     }
 }

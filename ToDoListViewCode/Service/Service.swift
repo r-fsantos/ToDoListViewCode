@@ -15,6 +15,10 @@ protocol serviceGetDataProtocol {
     func getData() -> [TarefaData]
 }
 
+protocol serviceUpdateProtocol {
+    func update(task: TarefaData, onCompletionHandler: (String) -> Void)
+}
+
 protocol serviceSaveProtocol {
     func save(task: TarefaData, onCompletionHandler: onCompletion)
 }
@@ -81,6 +85,29 @@ class Service: serviceGetDataProtocol, serviceSaveProtocol, serviceDeleteProtoco
             onCompletionHandler("Success")
         } catch let error as NSError {
             print("Save error: \(error.localizedDescription)")
+        }
+    }
+    
+    func update(task: TarefaData, onCompletionHandler: (String) -> Void) {
+        let context = getContext()
+        
+        let predicate = NSPredicate(format: "id == %@", "\(task.id)")
+        
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entity)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let fetchResults = try context.fetch(fetchRequest) as! [NSManagedObject]
+            
+            if let entityUpdated = fetchResults.first {
+                entityUpdated.setValue(task.isDone, forKey: "isDone")
+            }
+            
+            try context.save()
+            
+            onCompletionHandler("Successful Update")
+        } catch let error as NSError {
+            print("Update error: \(error)")
         }
     }
     
