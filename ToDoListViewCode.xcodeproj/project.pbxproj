@@ -14,8 +14,9 @@
 		882A58AD27EF48B5003E6B7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 882A58AC27EF48B5003E6B7F /* Assets.xcassets */; };
 		882A58B027EF48B5003E6B7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882A58AE27EF48B5003E6B7F /* LaunchScreen.storyboard */; };
 		882A58BC27EF4A8B003E6B7F /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BB27EF4A8B003E6B7F /* NewTaskViewController.swift */; };
-		882A58C027EF4BB4003E6B7F /* Tarefa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BF27EF4BB4003E6B7F /* Tarefa.swift */; };
+		882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BF27EF4BB4003E6B7F /* TarefaData.swift */; };
 		882A58C227EF4C01003E6B7F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C127EF4C01003E6B7F /* Service.swift */; };
+		882A58C527EF58AC003E6B7F /* MockTarefaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +29,9 @@
 		882A58AF27EF48B5003E6B7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		882A58B127EF48B5003E6B7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		882A58BB27EF4A8B003E6B7F /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
-		882A58BF27EF4BB4003E6B7F /* Tarefa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tarefa.swift; sourceTree = "<group>"; };
+		882A58BF27EF4BB4003E6B7F /* TarefaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TarefaData.swift; sourceTree = "<group>"; };
 		882A58C127EF4C01003E6B7F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTarefaDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,9 +121,18 @@
 		882A58BE27EF4B99003E6B7F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				882A58BF27EF4BB4003E6B7F /* Tarefa.swift */,
+				882A58C327EF5884003E6B7F /* MockTarefaDataSource */,
+				882A58BF27EF4BB4003E6B7F /* TarefaData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		882A58C327EF5884003E6B7F /* MockTarefaDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */,
+			);
+			path = MockTarefaDataSource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,7 +210,8 @@
 				882A58BC27EF4A8B003E6B7F /* NewTaskViewController.swift in Sources */,
 				882A58AB27EF48B3003E6B7F /* ToDoListViewCode.xcdatamodeld in Sources */,
 				882A58A127EF48B3003E6B7F /* AppDelegate.swift in Sources */,
-				882A58C027EF4BB4003E6B7F /* Tarefa.swift in Sources */,
+				882A58C527EF58AC003E6B7F /* MockTarefaDataSource.swift in Sources */,
+				882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */,
 				882A58A327EF48B3003E6B7F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
