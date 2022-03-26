@@ -4,11 +4,18 @@
 //
 //  Created by Renato F. dos Santos Jr on 26/03/22.
 //
+
 import UIKit
 
 class NewTaskViewController: UIViewController {
     var safeArea: UILayoutGuide!
     
+    lazy var buttonLabelFechar: UIButton = {
+        let button = UIButton(type: .close)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(self.tapFechar(sender:)), for: .touchUpInside)
+        return button
+    }()
     lazy var buttonLabel: UIButton = {
            let button = UIButton(type: .system)
            button.setTitle("Salvar", for: UIControl.State.normal)
@@ -48,6 +55,7 @@ class NewTaskViewController: UIViewController {
            inputText.translatesAutoresizingMaskIntoConstraints = false
            inputText.font = UIFont.systemFont(ofSize: 25)
            inputText.layer.cornerRadius = 5
+           inputText.adjustsFontSizeToFitWidth = true
            return inputText
        }()
     
@@ -55,7 +63,17 @@ class NewTaskViewController: UIViewController {
             // TODO
 //           print("Sucesso")
         dismiss(animated: true, completion: {
-                    print("Sucesso dismiss")
+                    print("tapSalvar")
+                    
+                })
+
+    }
+    
+    @objc func tapFechar(sender:UIButton){
+            // TODO
+//           print("Sucesso")
+        dismiss(animated: true, completion: {
+                    print("tapFechar")
                     
                 })
 
@@ -64,11 +82,13 @@ class NewTaskViewController: UIViewController {
     override func viewDidLoad() {
         safeArea = view.layoutMarginsGuide
         title = "Task ADD"
-        self.view.backgroundColor = .orange
+        self.view.backgroundColor = .white
         super.viewDidLoad()
         self.view.addSubview(self.inputTitleLabel)
         self.view.addSubview(self.inputDetailLabel)
+        self.view.addSubview(self.buttonLabelFechar)
         self.view.addSubview(self.buttonLabel)
+
         configConstraints()
         
 
@@ -78,8 +98,8 @@ class NewTaskViewController: UIViewController {
     private func configConstraints(){
         
         NSLayoutConstraint.activate([
-            self.inputTitleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-             self.inputTitleLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            self.inputTitleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 55),
+             self.inputTitleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
              self.inputTitleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
              self.inputTitleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
 
@@ -99,6 +119,15 @@ class NewTaskViewController: UIViewController {
             self.buttonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             self.buttonLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+        
+        NSLayoutConstraint.activate([
+            self.buttonLabelFechar.bottomAnchor.constraint(equalTo: self.inputTitleLabel.topAnchor, constant: -22),
+                   self.buttonLabelFechar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15),
+                   self.buttonLabelFechar.heightAnchor.constraint(equalToConstant: 30),
+                   self.buttonLabelFechar.widthAnchor.constraint(equalToConstant: 30)
+
+                   
+               ])
     }
 
 }
