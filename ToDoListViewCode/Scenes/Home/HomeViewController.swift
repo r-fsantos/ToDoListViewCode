@@ -69,6 +69,14 @@ class HomeViewController: UIViewController {
     /// Transition to create new task
     @objc func callNewTaskView() {
 //        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
+
+        let newTaskViewController = NewTaskViewController()
+
+        newTaskViewController.modalPresentationStyle = .fullScreen
+        present(newTaskViewController, animated: true) {
+            print("ok!")
+        }
+        viewWillAppear(true)
     }
 
 }
