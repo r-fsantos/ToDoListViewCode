@@ -19,18 +19,10 @@ class HomeViewController: UIViewController {
         return table
     }()
     
-    lazy var tarefas = [TarefaData]() {
-        didSet {
-            tarefasFiltradas = filterTasks(tasks: tarefas)
-        }
-    }
+    lazy var tarefas = [TarefaData]() { didSet { tarefasFiltradas = filterTasks(tasks: tarefas) } }
     
     lazy var tarefasFiltradas = [[TarefaData]]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
+        didSet { DispatchQueue.main.async { self.tableView.reloadData() } }
     }
 
     // MARK: View Life Cycle
@@ -50,7 +42,6 @@ class HomeViewController: UIViewController {
 
         // GetTasks
         tarefas = Service.shared.getData()
-        print(tarefas)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +63,6 @@ class HomeViewController: UIViewController {
     }
 
     // MARK: NewTaskSelection
-    /// Transition to create new task
     @objc func callNewTaskView() {
 //        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
 
@@ -82,6 +72,7 @@ class HomeViewController: UIViewController {
         present(newTaskViewController, animated: true) {
             print("ok!")
         }
+        tableView.reloadData()
     }
     
     // MARK: - Change Tarefa
@@ -111,8 +102,6 @@ extension HomeViewController: UITableViewDelegate {
         let tarefa = section[indexPath.row]
         
         changeTarefaStatus(task: tarefa)
-        
-        //tableView.deleteRows(at: [indexPath], with: .right)
     }
 }
 
@@ -131,6 +120,17 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        /**
+            ? Possible Implementation.
+            switch sectIon {
+                case .Done:
+                    return .Done.rawValue
+                case .ToBeDone:
+                    return .ToBeDone.rawValue
+                case .NoTasks:
+                    return .NoTasks.raw_value
+            }
+         */
         if section == 1 {
             return "Concluídas"
         } else {
@@ -150,8 +150,13 @@ extension HomeViewController: UITableViewDataSource {
         let tarefa = section[indexPath.row]
         
         // Configure cell here based on "tarefa" info
-        let cell = UITableViewCell()
-        cell.backgroundColor = (tarefa.isDone) ? .green : .red
+//        let cell =
+//        cell.backgroundColor = (tarefa.isDone) ? .green : .red
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier, for: indexPath) as? TarefaTableViewCell else { return UITableViewCell() }
+        
+        cell.titleLabel.text = tarefa.title
+        cell.descritionLabel.text = tarefa.detail
         
         return cell
     }
