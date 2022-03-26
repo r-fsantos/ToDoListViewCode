@@ -19,6 +19,14 @@ class HomeViewController: UIViewController {
         // TODO: Register cell
         return table
     }()
+    
+    lazy var tarefas = [TarefaData]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -36,6 +44,8 @@ class HomeViewController: UIViewController {
         ])
 
         // GetTasks
+        tarefas = Service.shared.getData()
+        print(tarefas)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +68,7 @@ class HomeViewController: UIViewController {
     // MARK: NewTaskSelection
     /// Transition to create new task
     @objc func callNewTaskView() {
-        print("Chamando newTaskViewController")
+//        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
     }
 
 }
