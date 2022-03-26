@@ -15,8 +15,7 @@ class HomeViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
-
-        // TODO: Register cell
+        table.register(TarefaTableViewCell.self, forCellReuseIdentifier: TarefaTableViewCell.identifier)
         return table
     }()
     

@@ -17,6 +17,7 @@
 		882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BF27EF4BB4003E6B7F /* TarefaData.swift */; };
 		882A58C227EF4C01003E6B7F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C127EF4C01003E6B7F /* Service.swift */; };
 		882A58C527EF58AC003E6B7F /* MockTarefaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */; };
+		88F0019F27EF665000DC2F1D /* TarefaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F0019E27EF665000DC2F1D /* TarefaTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		882A58BF27EF4BB4003E6B7F /* TarefaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TarefaData.swift; sourceTree = "<group>"; };
 		882A58C127EF4C01003E6B7F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTarefaDataSource.swift; sourceTree = "<group>"; };
+		88F0019E27EF665000DC2F1D /* TarefaTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TarefaTableViewCell.swift; path = ToDoListViewCode/Scenes/Home/TarefaTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 		882A58B927EF4A35003E6B7F /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				88F0019E27EF665000DC2F1D /* TarefaTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				882A58C527EF58AC003E6B7F /* MockTarefaDataSource.swift in Sources */,
 				882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */,
 				882A58A327EF48B3003E6B7F /* SceneDelegate.swift in Sources */,
+				88F0019F27EF665000DC2F1D /* TarefaTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
