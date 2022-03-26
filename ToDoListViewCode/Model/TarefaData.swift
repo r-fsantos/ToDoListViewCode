@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+struct TarefaData {
+    var id: UUID
+    var title: String
+    var detail: String
+    var isDone: Bool
+}
