@@ -14,6 +14,8 @@
 		882A58AD27EF48B5003E6B7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 882A58AC27EF48B5003E6B7F /* Assets.xcassets */; };
 		882A58B027EF48B5003E6B7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882A58AE27EF48B5003E6B7F /* LaunchScreen.storyboard */; };
 		882A58BC27EF4A8B003E6B7F /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BB27EF4A8B003E6B7F /* NewTaskViewController.swift */; };
+		882A58C027EF4BB4003E6B7F /* Tarefa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BF27EF4BB4003E6B7F /* Tarefa.swift */; };
+		882A58C227EF4C01003E6B7F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C127EF4C01003E6B7F /* Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		882A58AF27EF48B5003E6B7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		882A58B127EF48B5003E6B7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		882A58BB27EF4A8B003E6B7F /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
+		882A58BF27EF4BB4003E6B7F /* Tarefa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tarefa.swift; sourceTree = "<group>"; };
+		882A58C127EF4C01003E6B7F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,8 @@
 		882A589F27EF48B3003E6B7F /* ToDoListViewCode */ = {
 			isa = PBXGroup;
 			children = (
+				882A58BE27EF4B99003E6B7F /* Model */,
+				882A58BD27EF4B86003E6B7F /* Service */,
 				882A58B727EF48BC003E6B7F /* Scenes */,
 				882A58A027EF48B3003E6B7F /* AppDelegate.swift */,
 				882A58A227EF48B3003E6B7F /* SceneDelegate.swift */,
@@ -100,6 +106,22 @@
 				882A58BB27EF4A8B003E6B7F /* NewTaskViewController.swift */,
 			);
 			path = NewTask;
+			sourceTree = "<group>";
+		};
+		882A58BD27EF4B86003E6B7F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				882A58C127EF4C01003E6B7F /* Service.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		882A58BE27EF4B99003E6B7F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				882A58BF27EF4BB4003E6B7F /* Tarefa.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,9 +195,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				882A58A527EF48B3003E6B7F /* HomeViewController.swift in Sources */,
+				882A58C227EF4C01003E6B7F /* Service.swift in Sources */,
 				882A58BC27EF4A8B003E6B7F /* NewTaskViewController.swift in Sources */,
 				882A58AB27EF48B3003E6B7F /* ToDoListViewCode.xcdatamodeld in Sources */,
 				882A58A127EF48B3003E6B7F /* AppDelegate.swift in Sources */,
+				882A58C027EF4BB4003E6B7F /* Tarefa.swift in Sources */,
 				882A58A327EF48B3003E6B7F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
