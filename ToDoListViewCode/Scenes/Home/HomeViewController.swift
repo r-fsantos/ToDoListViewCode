@@ -99,22 +99,11 @@ class HomeViewController: UIViewController {
 // MARK: Extensions
 /// TODO: Separate into a separeted folder/file
 extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print("Cliquei na tela no índice \(indexPath.row)")
-
-            let tarefa = tarefas[indexPath.row]
-
-            changeTarefaStatus(task: tarefa)
-            //            tarefas.remove(at: indexPath.row)
-        }
-        tableView.deleteRows(at: [indexPath], with: .right)
-    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let trash = UIContextualAction(style: .destructive, title: "Deletar") { [weak self] (_, _, completion) in
             let tarefa = self?.tarefas[indexPath.row]
-            self?.handleMoveToTrash(uuid: tarefa!.id, indexPath: indexPath)
+            self?.handleMoveToTrash(uuid: tarefa!.id)
             completion(true)
         }
         trash.backgroundColor = .red
@@ -122,16 +111,13 @@ extension HomeViewController: UITableViewDelegate {
         return configuration
     }
     
-    private func handleMoveToTrash(uuid: UUID, indexPath: IndexPath) {
+    private func handleMoveToTrash(uuid: UUID) {
         Service.shared.delete(taskUUID: uuid.description) { print($0) }
-        DispatchQueue.main.async {
-            print("entrei")
-            self.tableView.deleteRows(at: [indexPath], with: .right)
-            self.tableView.reloadData()
-        }
+        tarefas = tarefas.filter { !($0.id == uuid) }
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
         let tarefa = tarefas[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -146,6 +132,7 @@ extension HomeViewController: UITableViewDelegate {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+//            tarefas = Service.shared.getData()
         }
     }
 }
