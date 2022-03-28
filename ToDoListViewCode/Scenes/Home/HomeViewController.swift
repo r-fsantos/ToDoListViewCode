@@ -65,9 +65,7 @@ class HomeViewController: UIViewController {
         present(newTaskViewController, animated: true) {
             print("ok!")
         }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        tarefas = Service.shared.getData()
     }
     
     // MARK: - Change Tarefa
@@ -123,12 +121,10 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier,
                                                        for: indexPath) as? TarefaTableViewCell else { return UITableViewCell() }
-        
         let tarefa = tarefas[indexPath.row]
-        
         cell.titleLabel.text = tarefa.title
         cell.descritionLabel.text = tarefa.detail
-        
+        cell.accessoryType = tarefa.isDone ? .checkmark : .none
         return cell
     }
 }
