@@ -45,14 +45,15 @@ class HomeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        // Antes de animações, antes da View ser chamada e ficar visível!
         navigationController?.navigationBar.prefersLargeTitles = true
 
         // TODO: Do we need some appearence configs?
-
         let newTaskButton = UIBarButtonItem(image: UIImage.init(systemName: "plus"),
                                             style: .plain,
                                             target: self,
                                             action: #selector(callNewTaskView))
+
         // TODO: Erase? TouchUpInside -> alert ...
         // navigationController?.editButtonItem =
 
@@ -95,6 +96,50 @@ class HomeViewController: UIViewController {
 // MARK: Extensions
 /// TODO: Separate into a separeted folder/file
 extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Cliquei na tela no índice \(indexPath.row)")
+            
+            let section = tarefasFiltradas[indexPath.section]
+            let tarefa = section[indexPath.row]
+            
+            changeTarefaStatus(task: tarefa)
+//            tarefas.remove(at: indexPath.row)
+        }
+        tableView.deleteRows(at: [indexPath], with: .right)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let trash = UIContextualAction(style: .destructive, title: "Deletar") { [weak self] (_, _, completion) in
+            let tarefa = self?.tarefas[indexPath.row]
+            self?.handleMoveToTrash(uuid: tarefa!.id)
+            completion(true)
+        }
+        trash.backgroundColor = .red
+        let configuration = UISwipeActionsConfiguration(actions: [trash])
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let done = UIContextualAction(style: .normal, title: "Feita") { [weak self] (_, _, completion) in
+            let tarefa = self?.tarefas[indexPath.row]
+            self?.handleMarkAsDone(uuid: tarefa!.id)
+            completion(true)
+        }
+        done.backgroundColor = .systemBlue
+        let configuration = UISwipeActionsConfiguration(actions: [done])
+        return configuration
+    }
+    
+    private func handleMoveToTrash(uuid: UUID) {
+        Service.shared.delete(taskUUID: uuid.description) { print($0) }
+    }
+    
+    private func handleMarkAsDone(uuid: UUID) {
+        print("Feita!")
+    }
+
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Cliquei na tela no índice \(indexPath.row)")
         
@@ -153,7 +198,8 @@ extension HomeViewController: UITableViewDataSource {
 //        let cell =
 //        cell.backgroundColor = (tarefa.isDone) ? .green : .red
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier, for: indexPath) as? TarefaTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier,
+                                                       for: indexPath) as? TarefaTableViewCell else { return UITableViewCell() }
         
         cell.titleLabel.text = tarefa.title
         cell.descritionLabel.text = tarefa.detail
