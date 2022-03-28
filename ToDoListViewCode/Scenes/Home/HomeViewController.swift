@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
+
     // MARK: Lazy vars
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
         table.register(TarefaTableViewCell.self, forCellReuseIdentifier: TarefaTableViewCell.identifier)
         return table
     }()
-    
+
     lazy var tarefas = [TarefaData]() {
         didSet {
             DispatchQueue.main.async {
@@ -26,14 +26,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = "Tarefas"
         view.addSubview(tableView)
-        
+
         // TODO: Create a metrics file
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -41,33 +41,23 @@ class HomeViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
-        
-        // GetTasks
+
         tarefas = Service.shared.getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // Antes de animações, antes da View ser chamada e ficar visível!
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        // TODO: Do we need some appearence configs?
+
         let newTaskButton = UIBarButtonItem(image: UIImage.init(systemName: "plus"),
                                             style: .plain,
                                             target: self,
                                             action: #selector(callNewTaskView))
-        
-        // TODO: Erase? TouchUpInside -> alert ...
-        // navigationController?.editButtonItem =
-        
         navigationItem.rightBarButtonItem = newTaskButton
-        
-        // GetTasks
         tarefas = Service.shared.getData()
     }
     
     // MARK: NewTaskSelection
     @objc func callNewTaskView() {
-        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
         
         let newTaskViewController = NewTaskViewController()
         
@@ -93,7 +83,6 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
 }
 
 // MARK: Extensions
@@ -117,22 +106,10 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
         let tarefa = tarefas[indexPath.row]
-        tableView.deselectRow(at: indexPath, animated: true)
-        
         if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark {
-                cell.accessoryType = .none
-            }
-            else {
-                cell.accessoryType = .checkmark
-            }
+            cell.accessoryType = cell.accessoryType == .checkmark ? .none : .checkmark
             changeTarefaStatus(task: tarefa)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-//            tarefas = Service.shared.getData()
         }
     }
 }
