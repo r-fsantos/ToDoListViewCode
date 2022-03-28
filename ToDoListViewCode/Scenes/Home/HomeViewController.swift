@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     // MARK: Lazy vars
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -19,19 +19,21 @@ class HomeViewController: UIViewController {
         return table
     }()
     
-    lazy var tarefas = [TarefaData]() { didSet { tarefasFiltradas = filterTasks(tasks: tarefas) } }
-    
-    lazy var tarefasFiltradas = [[TarefaData]]() {
-        didSet { DispatchQueue.main.async { self.tableView.reloadData() } }
+    lazy var tarefas = [TarefaData]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
-
+    
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Tarefas"
         view.addSubview(tableView)
-
+        
         // TODO: Create a metrics file
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -39,45 +41,46 @@ class HomeViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
-
+        
         // GetTasks
         tarefas = Service.shared.getData()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         // Antes de animações, antes da View ser chamada e ficar visível!
         navigationController?.navigationBar.prefersLargeTitles = true
-
+        
         // TODO: Do we need some appearence configs?
         let newTaskButton = UIBarButtonItem(image: UIImage.init(systemName: "plus"),
                                             style: .plain,
                                             target: self,
                                             action: #selector(callNewTaskView))
-
+        
         // TODO: Erase? TouchUpInside -> alert ...
         // navigationController?.editButtonItem =
-
+        
         navigationItem.rightBarButtonItem = newTaskButton
-
+        
         // GetTasks
         tarefas = Service.shared.getData()
     }
-
+    
     // MARK: NewTaskSelection
     @objc func callNewTaskView() {
-//        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
-
+        _ = TarefaDataSource.tarefas.map { Service.shared.save(task: $0) { print($0) } }
+        
         let newTaskViewController = NewTaskViewController()
-
+        
         newTaskViewController.modalPresentationStyle = .fullScreen
         present(newTaskViewController, animated: true) {
             print("ok!")
         }
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     // MARK: - Change Tarefa
-    
     func changeTarefaStatus(task: TarefaData) {
         var targetTask = task
         targetTask.isDone = !task.isDone
@@ -90,7 +93,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
+    
 }
 
 // MARK: Extensions
@@ -99,12 +102,11 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Cliquei na tela no índice \(indexPath.row)")
-            
-            let section = tarefasFiltradas[indexPath.section]
-            let tarefa = section[indexPath.row]
-            
+
+            let tarefa = tarefas[indexPath.row]
+
             changeTarefaStatus(task: tarefa)
-//            tarefas.remove(at: indexPath.row)
+            //            tarefas.remove(at: indexPath.row)
         }
         tableView.deleteRows(at: [indexPath], with: .right)
     }
@@ -112,7 +114,7 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let trash = UIContextualAction(style: .destructive, title: "Deletar") { [weak self] (_, _, completion) in
             let tarefa = self?.tarefas[indexPath.row]
-            self?.handleMoveToTrash(uuid: tarefa!.id)
+            self?.handleMoveToTrash(uuid: tarefa!.id, indexPath: indexPath)
             completion(true)
         }
         trash.backgroundColor = .red
@@ -120,111 +122,49 @@ extension HomeViewController: UITableViewDelegate {
         return configuration
     }
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let done = UIContextualAction(style: .normal, title: "Feita") { [weak self] (_, _, completion) in
-            let tarefa = self?.tarefas[indexPath.row]
-            self?.handleMarkAsDone(uuid: tarefa!.id)
-            completion(true)
-        }
-        done.backgroundColor = .systemBlue
-        let configuration = UISwipeActionsConfiguration(actions: [done])
-        return configuration
-    }
-    
-    private func handleMoveToTrash(uuid: UUID) {
+    private func handleMoveToTrash(uuid: UUID, indexPath: IndexPath) {
         Service.shared.delete(taskUUID: uuid.description) { print($0) }
-    }
-    
-    private func handleMarkAsDone(uuid: UUID) {
-        print("Feita!")
+        DispatchQueue.main.async {
+            print("entrei")
+            self.tableView.deleteRows(at: [indexPath], with: .right)
+            self.tableView.reloadData()
+        }
     }
 
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Cliquei na tela no índice \(indexPath.row)")
+        let tarefa = tarefas[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        let section = tarefasFiltradas[indexPath.section]
-        let tarefa = section[indexPath.row]
-        
-        changeTarefaStatus(task: tarefa)
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark {
+                cell.accessoryType = .none
+            }
+            else {
+                cell.accessoryType = .checkmark
+            }
+            changeTarefaStatus(task: tarefa)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
 extension HomeViewController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        var count = 0
-        
-        for item in self.tarefasFiltradas {
-            if item.count > 0 {
-                count += 1
-            }
-        }
-        
-        return count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        /**
-            ? Possible Implementation.
-            switch sectIon {
-                case .Done:
-                    return .Done.rawValue
-                case .ToBeDone:
-                    return .ToBeDone.rawValue
-                case .NoTasks:
-                    return .NoTasks.raw_value
-            }
-         */
-        if section == 1 {
-            return "Concluídas"
-        } else {
-            return "A Fazer"
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = self.tarefasFiltradas[section]
-        
-        return section.count
+        tarefas.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let section = tarefasFiltradas[indexPath.section]
-        let tarefa = section[indexPath.row]
-        
-        // Configure cell here based on "tarefa" info
-//        let cell =
-//        cell.backgroundColor = (tarefa.isDone) ? .green : .red
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier,
                                                        for: indexPath) as? TarefaTableViewCell else { return UITableViewCell() }
+        
+        let tarefa = tarefas[indexPath.row]
         
         cell.titleLabel.text = tarefa.title
         cell.descritionLabel.text = tarefa.detail
         
         return cell
-    }
-}
-
-extension HomeViewController {
-    func filterTasks(tasks: [TarefaData]) -> [[TarefaData]] {
-        var filteredTasks: [[TarefaData]] = []
-        var toBeDoneTasks: [TarefaData] = []
-        var doneTasks: [TarefaData] = []
-        
-        for item in tasks {
-            if item.isDone {
-                doneTasks.append(item)
-            } else {
-                toBeDoneTasks.append(item)
-            }
-        }
-        
-        filteredTasks.append(toBeDoneTasks)
-        filteredTasks.append(doneTasks)
-        
-        return filteredTasks
     }
 }

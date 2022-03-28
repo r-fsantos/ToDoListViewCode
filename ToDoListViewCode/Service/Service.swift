@@ -49,6 +49,7 @@ class Service: serviceGetDataProtocol, serviceSaveProtocol, serviceDeleteProtoco
             
             guard let tasks = try getContext().fetch(fetchRequest) as? [NSManagedObject] else { return listTasks }
             
+            
             for item in tasks {
                 if let id = item.value(forKey: "id") as? UUID,
                    let title = item.value(forKey: "title") as? String,
