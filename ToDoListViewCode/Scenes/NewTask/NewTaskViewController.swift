@@ -1,90 +1,99 @@
-//
-//  NewTaskViewController.swift
-//  ToDoListViewCode
-//
-//  Created by Renato F. dos Santos Jr on 26/03/22.
-//
 import UIKit
 
+// MARK: Avoid half portuguese and english would recommend choose one
 class NewTaskViewController: UIViewController {
-
-    var safeArea: UILayoutGuide!
-
-    lazy var buttonLabel: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Salvar", for: UIControl.State.normal)
+    //    var safeArea: UILayoutGuide!
+    
+    // todo: Don't
+    lazy var buttonLabelFechar: UIButton = {
+        let button = UIButton(type: .close)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
-        button.tintColor = .black
-        button.layer.backgroundColor = UIColor.systemGray5.cgColor
-        button.layer.borderColor = UIColor.systemGray5.cgColor
-        button.layer.borderWidth = 4
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(self.tapSalvar(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.tapFechar(sender:)), for: .touchUpInside)
         return button
     }()
-
+    
+    lazy var buttonLabel: UIButton = {
+        let button = AppTheme.buildButton(with: .system,
+                                          title: "Salvar",
+                                          fontSize: 25,
+                                          fontColor: .black)
+        
+        button.addTarget(self, action: #selector(tapSalvar), for: .touchUpInside)
+        return button
+    }()
+    
+    
     lazy var inputTitleLabel: UITextField = {
-        let inputText = UITextField()
-        inputText.layer.borderWidth = 1
-        inputText.layer.borderColor = UIColor.systemGray5.cgColor
-        inputText.textColor = .black
-        inputText.placeholder = "Titulo"
-        inputText.textAlignment = .center
-        inputText.translatesAutoresizingMaskIntoConstraints = false
-        inputText.font = UIFont.systemFont(ofSize: 25)
-        inputText.layer.cornerRadius = 5
-        return inputText
+        AppTheme.buildTextField(placeholder: "Título",
+                                fontColor: .black, fontSize: 25)
     }()
-
+    
     lazy var inputDetailLabel: UITextField = {
-        let inputText = UITextField()
-        inputText.textColor = .black
-        inputText.placeholder = "Descrição da tarefa"
-        inputText.textAlignment = .center
-        inputText.layer.borderWidth = 1
-        inputText.layer.borderColor = UIColor.systemGray5.cgColor
-        inputText.translatesAutoresizingMaskIntoConstraints = false
-        inputText.font = UIFont.systemFont(ofSize: 25)
-        inputText.layer.cornerRadius = 5
-        return inputText
+        AppTheme.buildTextField(placeholder: "Descrição da tarefa",
+                                fontColor: .black,
+                                fontSize: 25)
     }()
+    
+    @objc func tapSalvar(sender: UIButton) {
+        guard inputTitleLabel.hasText,
+              inputDetailLabel.hasText,
+              let title = inputTitleLabel.text,
+              let detail = inputDetailLabel.text else {
+                  let allertEmptyTarefa = UIAlertController(title: "ERRO", message: "Digite título e descrição!", preferredStyle: .alert)
+                  allertEmptyTarefa.addAction(UIAlertAction(title: "Tentar novamente", style: .destructive, handler: nil))
+                  present(allertEmptyTarefa, animated: true, completion: nil)
+                  return
+              }
+        
+        let tarefa = TarefaData.init(id: UUID(),
+                                     title: title,
+                                     detail: detail,
+                                     isDone: false)
+        
+        Service.shared.save(task: tarefa) { print($0) }
+        
+        dismiss(animated: true, completion: {
+            print("Tarefa criada com sucesso: \(tarefa)")
+        })
+    }
 
-    @objc func tapSalvar(sender:UIButton){
-        dismiss(animated: true, completion: { print("Sucesso dismiss") })
+    @objc func tapFechar(sender: UIButton) {
+        dismiss(animated: true, completion: {
+            print("tapFechar")
+        })
     }
 
     override func viewDidLoad() {
-        safeArea = view.layoutMarginsGuide
-        title = "Task ADD"
-        self.view.backgroundColor = .orange
         super.viewDidLoad()
-        self.view.addSubview(self.inputTitleLabel)
-        self.view.addSubview(self.inputDetailLabel)
-        self.view.addSubview(self.buttonLabel)
-        configConstraints()
+        setUpViewConfiguration()
+        setUpConstraints()
     }
-
-    private func configConstraints(){
-        // TODO: Create Metrics file
+    
+    private func setUpViewConfiguration() {
+        title = "Task ADD"
+        view.backgroundColor = .lightGray
+        view.addSubview(inputTitleLabel)
+        view.addSubview(inputDetailLabel)
+        view.addSubview(buttonLabelFechar)
+        view.addSubview(buttonLabel)
+    }
+    
+    private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            self.inputTitleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.inputTitleLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            self.inputTitleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            self.inputTitleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
-        ])
-
-        NSLayoutConstraint.activate([
-            self.inputDetailLabel.topAnchor.constraint(equalTo: self.inputTitleLabel.bottomAnchor, constant: 10),
-            self.inputDetailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            self.inputDetailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-        ])
-
-        NSLayoutConstraint.activate([
-            self.buttonLabel.topAnchor.constraint(equalTo: self.inputDetailLabel.bottomAnchor, constant: 50),
-            self.buttonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            self.buttonLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            inputTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55),
+            inputTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            inputTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            inputTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            inputDetailLabel.topAnchor.constraint(equalTo: inputTitleLabel.bottomAnchor, constant: 16),
+            inputDetailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            inputDetailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            buttonLabel.topAnchor.constraint(equalTo: inputDetailLabel.bottomAnchor, constant: 16),
+            buttonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            buttonLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            buttonLabelFechar.bottomAnchor.constraint(equalTo: inputTitleLabel.topAnchor, constant: -22),
+            buttonLabelFechar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            buttonLabelFechar.heightAnchor.constraint(equalToConstant: 30),
+            buttonLabelFechar.widthAnchor.constraint(equalToConstant: 30),
         ])
     }
-
 }

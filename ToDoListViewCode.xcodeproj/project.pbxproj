@@ -17,6 +17,7 @@
 		882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58BF27EF4BB4003E6B7F /* TarefaData.swift */; };
 		882A58C227EF4C01003E6B7F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C127EF4C01003E6B7F /* Service.swift */; };
 		882A58C527EF58AC003E6B7F /* MockTarefaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */; };
+		8858EF6727F24C0F00B5A446 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8858EF6627F24C0F00B5A446 /* AppTheme.swift */; };
 		88F0019F27EF665000DC2F1D /* TarefaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F0019E27EF665000DC2F1D /* TarefaTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		882A58BF27EF4BB4003E6B7F /* TarefaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TarefaData.swift; sourceTree = "<group>"; };
 		882A58C127EF4C01003E6B7F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTarefaDataSource.swift; sourceTree = "<group>"; };
+		8858EF6627F24C0F00B5A446 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		88F0019E27EF665000DC2F1D /* TarefaTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TarefaTableViewCell.swift; path = ToDoListViewCode/Scenes/Home/TarefaTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 		882A589F27EF48B3003E6B7F /* ToDoListViewCode */ = {
 			isa = PBXGroup;
 			children = (
+				8858EF6527F24BFA00B5A446 /* Theme */,
 				882A58BE27EF4B99003E6B7F /* Model */,
 				882A58BD27EF4B86003E6B7F /* Service */,
 				882A58B727EF48BC003E6B7F /* Scenes */,
@@ -136,6 +139,14 @@
 				882A58C427EF58AC003E6B7F /* MockTarefaDataSource.swift */,
 			);
 			path = MockTarefaDataSource;
+			sourceTree = "<group>";
+		};
+		8858EF6527F24BFA00B5A446 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				8858EF6627F24C0F00B5A446 /* AppTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +228,7 @@
 				882A58C027EF4BB4003E6B7F /* TarefaData.swift in Sources */,
 				882A58A327EF48B3003E6B7F /* SceneDelegate.swift in Sources */,
 				88F0019F27EF665000DC2F1D /* TarefaTableViewCell.swift in Sources */,
+				8858EF6727F24C0F00B5A446 /* AppTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

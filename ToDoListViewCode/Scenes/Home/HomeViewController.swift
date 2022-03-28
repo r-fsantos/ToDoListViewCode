@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     // MARK: Lazy vars
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
         table.register(TarefaTableViewCell.self, forCellReuseIdentifier: TarefaTableViewCell.identifier)
         return table
     }()
-
+    
     lazy var tarefas = [TarefaData]() {
         didSet {
             DispatchQueue.main.async {
@@ -26,14 +26,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
+    
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Tarefas"
         view.addSubview(tableView)
-
+        
         // TODO: Create a metrics file
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -41,13 +41,13 @@ class HomeViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
-
+        
         tarefas = Service.shared.getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.prefersLargeTitles = true
-
+        
         let newTaskButton = UIBarButtonItem(image: UIImage.init(systemName: "plus"),
                                             style: .plain,
                                             target: self,
