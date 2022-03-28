@@ -11,23 +11,23 @@ import UIKit
 
 typealias onCompletion = (String) -> Void
 
-protocol serviceGetDataProtocol {
+protocol ServiceGetDataProtocol {
     func getData() -> [TarefaData]
 }
 
-protocol serviceUpdateProtocol {
+protocol ServiceUpdateProtocol {
     func update(task: TarefaData, onCompletionHandler: (String) -> Void)
 }
 
-protocol serviceSaveProtocol {
+protocol ServiceSaveProtocol {
     func save(task: TarefaData, onCompletionHandler: onCompletion)
 }
 
-protocol serviceDeleteProtocol {
+protocol ServiceDeleteProtocol {
     func delete(taskUUID: String, onCompletionHandler: onCompletion)
 }
 
-class Service: serviceGetDataProtocol, serviceSaveProtocol, serviceDeleteProtocol {
+class Service: ServiceGetDataProtocol, ServiceSaveProtocol, ServiceDeleteProtocol {
     
     private let entity = "Tarefa"
     
@@ -48,6 +48,7 @@ class Service: serviceGetDataProtocol, serviceSaveProtocol, serviceDeleteProtoco
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entity)
             
             guard let tasks = try getContext().fetch(fetchRequest) as? [NSManagedObject] else { return listTasks }
+            
             
             for item in tasks {
                 if let id = item.value(forKey: "id") as? UUID,
