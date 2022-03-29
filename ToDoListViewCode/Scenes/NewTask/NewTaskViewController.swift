@@ -71,7 +71,7 @@ class NewTaskViewController: UIViewController {
     
     private func setUpViewConfiguration() {
         title = "Task ADD"
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         view.addSubview(inputTitleLabel)
         view.addSubview(inputDetailLabel)
         view.addSubview(buttonLabelFechar)
@@ -87,6 +87,7 @@ class NewTaskViewController: UIViewController {
             inputDetailLabel.topAnchor.constraint(equalTo: inputTitleLabel.bottomAnchor, constant: 16),
             inputDetailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             inputDetailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            inputDetailLabel.heightAnchor.constraint(equalToConstant: 70),
             buttonLabel.topAnchor.constraint(equalTo: inputDetailLabel.bottomAnchor, constant: 16),
             buttonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             buttonLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),

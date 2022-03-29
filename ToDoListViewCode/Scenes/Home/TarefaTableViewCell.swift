@@ -23,7 +23,6 @@ class TarefaTableViewCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Mussum Ipsum"
-        label.textColor = .white
         // TODO: Create a metrics file
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +32,6 @@ class TarefaTableViewCell: UITableViewCell {
     lazy var descritionLabel: UILabel = {
         let label = UILabel()
         label.text = "Mussum Ipsum, cacilds vidis litro abertis."
-        label.textColor = .white
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
