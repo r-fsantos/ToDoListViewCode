@@ -30,21 +30,10 @@ class HomeViewController: UIViewController {
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = "Tarefas"
-        view.addSubview(tableView)
-        
-        // TODO: Create a metrics file
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
-        
+        setUpViewConfiguration()
         tarefas = Service.shared.getData()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -56,12 +45,26 @@ class HomeViewController: UIViewController {
         tarefas = Service.shared.getData()
     }
     
+    private func setUpViewConfiguration() {
+        title = "Tarefas"
+        view.addSubview(tableView)
+        
+        // TODO: Create a metrics file
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+        ])
+    }
+    
     // MARK: NewTaskSelection
     @objc func callNewTaskView() {
-        
+
         let newTaskViewController = NewTaskViewController()
         
         newTaskViewController.modalPresentationStyle = .fullScreen
+        
         present(newTaskViewController, animated: true) {
             print("ok!")
         }

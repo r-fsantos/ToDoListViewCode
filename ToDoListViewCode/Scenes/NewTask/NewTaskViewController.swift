@@ -2,23 +2,20 @@ import UIKit
 
 // MARK: Avoid half portuguese and english would recommend choose one
 class NewTaskViewController: UIViewController {
-    //    var safeArea: UILayoutGuide!
-    
-    // todo: Don't
-    lazy var buttonLabelFechar: UIButton = {
+    lazy var closeButton: UIButton = {
         let button = UIButton(type: .close)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(self.tapFechar(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.onTapCloseButton(sender:)), for: .touchUpInside)
         return button
     }()
     
-    lazy var buttonLabel: UIButton = {
+    lazy var saveButton: UIButton = {
         let button = AppTheme.buildButton(with: .system,
                                           title: "Salvar",
                                           fontSize: 25,
                                           fontColor: .black)
         
-        button.addTarget(self, action: #selector(tapSalvar), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onTapSaveButton), for: .touchUpInside)
         return button
     }()
     
@@ -34,7 +31,7 @@ class NewTaskViewController: UIViewController {
                                 fontSize: 25)
     }()
     
-    @objc func tapSalvar(sender: UIButton) {
+    @objc func onTapSaveButton(sender: UIButton) {
         guard inputTitleLabel.hasText,
               inputDetailLabel.hasText,
               let title = inputTitleLabel.text,
@@ -57,7 +54,7 @@ class NewTaskViewController: UIViewController {
         })
     }
 
-    @objc func tapFechar(sender: UIButton) {
+    @objc func onTapCloseButton(sender: UIButton) {
         dismiss(animated: true, completion: {
             print("tapFechar")
         })
@@ -70,12 +67,13 @@ class NewTaskViewController: UIViewController {
     }
     
     private func setUpViewConfiguration() {
-        title = "Task ADD"
+        title = "Nova Tarefa"
+        navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .lightGray
         view.addSubview(inputTitleLabel)
         view.addSubview(inputDetailLabel)
-        view.addSubview(buttonLabelFechar)
-        view.addSubview(buttonLabel)
+        view.addSubview(closeButton)
+        view.addSubview(saveButton)
     }
     
     private func setUpConstraints() {
@@ -87,13 +85,13 @@ class NewTaskViewController: UIViewController {
             inputDetailLabel.topAnchor.constraint(equalTo: inputTitleLabel.bottomAnchor, constant: 16),
             inputDetailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             inputDetailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            buttonLabel.topAnchor.constraint(equalTo: inputDetailLabel.bottomAnchor, constant: 16),
-            buttonLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            buttonLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            buttonLabelFechar.bottomAnchor.constraint(equalTo: inputTitleLabel.topAnchor, constant: -22),
-            buttonLabelFechar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            buttonLabelFechar.heightAnchor.constraint(equalToConstant: 30),
-            buttonLabelFechar.widthAnchor.constraint(equalToConstant: 30),
+            saveButton.topAnchor.constraint(equalTo: inputDetailLabel.bottomAnchor, constant: 16),
+            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            closeButton.bottomAnchor.constraint(equalTo: inputTitleLabel.topAnchor, constant: -22),
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
         ])
     }
 }
